@@ -51,7 +51,7 @@ export default class BrowserSet extends EventEmitter {
     async _getReadyTimeout () {
         const isLocalBrowser      = connection => connection.provider.isLocalBrowser(connection.id, connection.browserInfo.browserName);
         const remoteBrowsersExist = (await Promise.all(this.browserConnections.map(isLocalBrowser))).indexOf(false) > -1;
-
+        console.log({ isLocalBrowser, remoteBrowsersExist });
         return remoteBrowsersExist ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
     }
 
@@ -75,6 +75,7 @@ export default class BrowserSet extends EventEmitter {
     }
 
     async _waitConnectionsOpened () {
+        console.log({ browserConnections: this.browserConnections });
         const connectionsReadyPromise = Promise.all(
             this.browserConnections
                 .filter(bc => !bc.opened)
